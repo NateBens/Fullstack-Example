@@ -7,9 +7,9 @@ export class AddContact extends Component {
 
   constructor(props) {
     super(props);
-    var defaultDate = new Date();
+    var defaultDate = new Date().toLocaleString();
     this.state = { name: '',
-                  birthdate: defaultDate,
+                  birthdate: '',
                   group: '',
                   description: '',
                   favorite: false,
@@ -42,6 +42,7 @@ export class AddContact extends Component {
                           birthdate : this.state.birthdate,
                           contactGroup : this.state.group,
                           description : this.state.description,
+                          favorite : this.state.favorite,
                           createdAt : this.state.createdAt,
                           updatedAt : this.state.updatedAt })
     })
@@ -78,7 +79,7 @@ export class AddContact extends Component {
           </div>
           <div class="form-check mb-2 mr-sm-2 mb-sm-0">
             <label class="form-check-label">
-              <input class="form-check-input" type="checkbox"
+              <input class="form-check-input" type="checkbox" name="favorite"
                 checked={this.state.favorite} onChange={this.handleInputChange}/> Favorite
             </label>
           </div>

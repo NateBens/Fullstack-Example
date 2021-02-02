@@ -35,6 +35,7 @@ export class Home extends Component {
       pathname: '/edit',
       data: contact
     })
+    this.populateContacts();
   }
 
   render() {
@@ -83,16 +84,11 @@ export class Home extends Component {
       headers: {
         'Content-Type': 'application/json'
       },
-      //body: JSON.stringify({ id: '123', name : 'qweq' }) //for a post
-      // body data type must match "Content-Type" header
     })
     .then(response => response.json())
     .then(data => this.setState({ contacts: data }))
     .then(this.render())
     .catch(error => console.error('Unable to get items.', error));
-    //const response = await fetch('contacts');
-    //const data = await response.json();
-    //this.setState({ contacts: data, loading: false });
   }
 
 }

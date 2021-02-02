@@ -7,15 +7,16 @@ export class Edit extends Component {
 
   constructor(props) {
     super(props);
+    const { data } = this.props.location;
     var defaultDate = new Date();
-    this.state = { id : 0, 
-                  name: '',
-                  birthdate: defaultDate,
-                  group: '',
-                  description: '',
-                  favorite: false,
-                  createdAt: defaultDate,
-                  updatedAt: defaultDate
+    this.state = { id : data.id,
+                  name: data.name,
+                  birthdate: data.birthdate,
+                  contactGroup: data.contactGroup,
+                  description: data.description,
+                  favorite: data.favorite,
+                  createdAt: data.createdAt,
+                  updatedAt: data.updatedAt
   };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
@@ -43,8 +44,9 @@ export class Edit extends Component {
       body: JSON.stringify({ id : this.state.id,
                           name : this.state.name, 
                           birthdate : this.state.birthdate,
-                          contactGroup : this.state.group,
+                          contactGroup : this.state.contactGroup,
                           description : this.state.description,
+                          favorite : this.state.favorite,
                           createdAt : this.state.createdAt,
                           updatedAt : this.state.updatedAt })
     })
@@ -55,47 +57,36 @@ export class Edit extends Component {
   }
 
   render() {
-    const { data } = this.props.location;
-    var contact = data;
-    //alert('Contact ' + contact.name + ' is being edited!')
-    this.state = { id : contact.id, 
-        name: contact.name,
-        birthdate: contact.birthdate,
-        group: contact.group,
-        description: contact.description,
-        favorite: contact.favorite,
-        createdAt: contact.createdAt,
-        updatedAt: contact.updatedAt
-    };
     //alert('Contact ' + this.state.id + ' is being edited!')
+    var contact = this.state;
     return (
       <div>
         <form onSubmit={this.handleOnSubmit}>
           <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" id ="namefield" name="name" 
-              value={this.state.name} onChange={this.handleInputChange}/>
+              value={contact.name} onChange={this.handleInputChange}/>
           </div>
           <div class="form-group">
             <label for="birthdate">Birthdate:</label>
             <input type="date" id="birthdatefield" name="birthdate" 
-              value={this.state.birthdate} onChange={this.handleInputChange}/>
+              value={contact.birthdate} onChange={this.handleInputChange}/>
           </div>
           <div class="form-group">
             <label for="group">Group:</label>
-            <input type="text" id="groupfield" name="group"
-              value={this.state.group} onChange={this.handleInputChange}/>
+            <input type="text" id="groupfield" name="contactGroup"
+              value={contact.contactGroup} onChange={this.handleInputChange}/>
           </div>
           <div class="form-group">
             <label for="description">Description:</label>
             <input type="text" id="descriptionfield" name="description"
-              value={this.state.description} onChange={this.handleInputChange}/>
+              value={contact.description} onChange={this.handleInputChange}/>
           </div>
           <div class="form-check mb-2 mr-sm-2 mb-sm-0">
             <label class="form-check-label">
-              <input class="form-check-input" type="checkbox"
-                checked={this.state.favorite} onChange={this.handleInputChange}/> Favorite
-            </label>
+              <input class="form-check-input" type="checkbox" name="favorite"
+                checked={this.state.favorite} onChange={this.handleInputChange}/>
+                Favorite </label>
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
