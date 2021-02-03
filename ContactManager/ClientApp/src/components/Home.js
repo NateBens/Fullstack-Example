@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import ListGroup from 'reactstrap/lib/ListGroup';
 import ListGroupItemText from 'reactstrap/lib/ListGroupItemText';
 import { tagPropType } from 'reactstrap/lib/utils';
+import {increment, decrement} from '../actions';
 
 export class Home extends Component {
   static displayName = Home.name;
@@ -35,10 +37,19 @@ export class Home extends Component {
       pathname: '/edit',
       data: contact
     })
-    this.populateContacts();
   }
 
   render() {
+    /*const counter = useSelector(state => state.counter); //needs to be in a function component
+      const isLogged = useSelector(state => state.isLogged);
+      const dispatch = useDispatch();
+      <h2>Counter: {counter}</h2>
+      <button = onClick={() => dispatch(increment(5))}>+</button>
+      <button = onClick={() => dispatch(decrement())}>-</button>
+
+      {isLogged ? <h3>Valuable Info I shouldnt see</h3> : '' }
+      
+    */
     return (
       <div>
         <h1 id="tabelLabel" >Contact List</h1>

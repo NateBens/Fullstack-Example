@@ -8,16 +8,14 @@ import { Edit } from './components/Edit';
 
 import './custom.css'
 
-export default class App extends Component {
-  static displayName = App.name;
-
-  render () {
-    return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/add-contact' component={AddContact} />
-        <Route path='/edit' component={Edit} />
-      </Layout>
-    );
-  }
+function App() {
+  return (
+    <Layout>
+      <Route exact path='/' component={Home} />
+      <Route path='/add-contact' component={AddContact} />
+      <Route path='/edit' component={Edit} />
+    </Layout>
+  );
 }
+
+export default App;
