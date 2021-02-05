@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { Home } from './Home';
 
 export class AddContact extends Component {
   static displayName = AddContact.name;

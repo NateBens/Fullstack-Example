@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { Home } from './Home';
 
 export class Edit extends Component {
   static displayName = Edit.name;
@@ -8,7 +7,6 @@ export class Edit extends Component {
   constructor(props) {
     super(props);
     const { data } = this.props.location;
-    var defaultDate = new Date();
     this.state = { id : data.id,
                   name: data.name,
                   birthdate: data.birthdate,
@@ -34,7 +32,7 @@ export class Edit extends Component {
 
   handleOnSubmit(event){
     event.preventDefault();
-    this.state.updatedAt = new Date();
+    this.setState({ updatedAt: new Date()})
     fetch('https://localhost:5001/api/contacts/' + this.state.id, {
       method: 'PUT',
       mode: 'cors',
