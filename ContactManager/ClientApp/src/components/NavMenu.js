@@ -21,9 +21,6 @@ function NavMenu() {
               <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/add-contact">Add Contact</NavLink>
-              </NavItem>
             </ul>
           </Collapse>
         </Container>

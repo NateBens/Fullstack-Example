@@ -1,29 +1,65 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import ListGroup from 'reactstrap/lib/ListGroup';
-import ListGroupItemText from 'reactstrap/lib/ListGroupItemText';
-import { tagPropType } from 'reactstrap/lib/utils';
-import {increment, decrement} from '../actions';
+//import { useSelector, useDispatch } from 'react-redux';
+//import ListGroup from 'reactstrap/lib/ListGroup';
+//import ListGroupItemText from 'reactstrap/lib/ListGroupItemText';
+//import { tagPropType } from 'reactstrap/lib/utils';
+//import {increment, decrement} from '../actions';
+import AddContact from './AddContact';
 
-const fetchContacts = () =>
-  fetch('https://localhost:5001/api/contacts', {
+async function fetchContacts() {
+  const response =  await fetch('https://localhost:5001/api/contacts', {
     method: 'GET', // *GET, POST, PUT, DELETE, etc.
     mode: 'cors', // no-cors, *cors, same-origin
     headers: {
       'Content-Type': 'application/json'
     },
   })
-  .then(response => response.json())
-  .catch(error => console.error('Unable to get items.', error));
+  return await response.json();
+}
+
+  function useFetchContacts() {
+    const [isFetching, setFetching] = useState(false);
+    const [contacts, setContacts] = useState([]);
+
+    useEffect(function fetch() {
+      (async function() {
+        setFetching(true);
+        setContacts(await fetchContacts());
+        setFetching(false);
+      })();
+    }, []);
+    //console.log(contacts);
+
+    return [contacts,isFetching];
+  }
+
 
 const Home = (props) => {
   const [contacts, setContacts] = useState([]);
+  const [addingContact, setAddingContact] = useState(false);
+  const [fetchedcontacts, isFetching] = useFetchContacts();
 
   useEffect(() => {
-    fetchContacts().then(data => setContacts(data));
-  });
+    if (contacts && contacts.length < 1) {
+      setContacts(fetchedcontacts);
+    }
+  }, [contacts,fetchedcontacts]);
 
-  const handleDelete = id => {
+  const addContact = contact => {
+    setContacts({...contacts,contact});
+    setAddingContact(false);
+  }
+
+  const AddContactForm = () => {
+    // if adding contact show button, else show AddContact component.
+    if (addingContact) {
+      return ( <AddContact addContact={addContact}/> )
+    } else {
+      return ( <button onClick={() => {setAddingContact(true)}}>Add Contact</button> )
+    }
+  }
+
+  const handleDelete = id => { //likely needs to be reworked to be in line with add
     console.log('id ' + id)
     fetch('https://localhost:5001/api/contacts/'+ id, {
       method: 'DELETE',
@@ -48,11 +84,15 @@ const Home = (props) => {
   };
 
   
-
+  if (isFetching) {
+    return <div>Fetching Contacts...</div>
+  }
+  console.log(contacts);
   return (
     <div>
         <h1 id="tabelLabel" >Contact List</h1>
         <p>This project is a demonstration of my skills as a full-stuck developer!</p>
+        <AddContactForm />
         <table className='table table-striped' aria-labelledby="tabelLabel">
           <thead>
             <tr>

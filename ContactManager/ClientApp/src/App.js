@@ -2,7 +2,6 @@ import React from 'react';
 import { Route } from 'react-router';
 import Layout from './components/Layout';
 import Home from './components/Home';
-import { AddContact } from './components/AddContact';
 import { Edit } from './components/Edit';
 
 
@@ -12,7 +11,6 @@ function App() {
   return (
     <Layout>
       <Route exact path='/' component={Home} />
-      <Route path='/add-contact' component={AddContact} />
       <Route path='/edit' component={Edit} />
     </Layout>
   );
