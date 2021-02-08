@@ -29,7 +29,7 @@ namespace ContactManager.Controllers
 
         // GET: api/Contacts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Contact>> GetContact(long id)
+        public async Task<ActionResult<Contact>> GetContact(int id)
         {
             var contact = await _context.Contacts.FindAsync(id);
 
@@ -42,7 +42,7 @@ namespace ContactManager.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutContact(long id, Contact contact)
+        public async Task<IActionResult> PutContact(int id, Contact contact)
         {
             if (id != contact.Id)
             {
@@ -86,7 +86,7 @@ namespace ContactManager.Controllers
 
         // DELETE: api/Contacts/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteContact(long id)
+        public async Task<IActionResult> DeleteContact(int id)
         {
             var contact = await _context.Contacts.FindAsync(id);
             if (contact == null)
@@ -100,7 +100,7 @@ namespace ContactManager.Controllers
             return NoContent();
         }
 
-        private bool ContactExists(long id)
+        private bool ContactExists(int id)
         {
             return _context.Contacts.Any(e => e.Id == id);
         }
