@@ -18,6 +18,12 @@ namespace ContactManager
         {
             Configuration = configuration;
             _appEnv = appEnv;
+
+            using (var db = new ContactContext())
+            {
+                db.Database.EnsureCreated();
+                //db.Database.Migrate();
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -33,13 +39,16 @@ namespace ContactManager
                 configuration.RootPath = "ClientApp/build";
             });
 
+            services.AddMvc();
+            services.AddEntityFrameworkSqlite().AddDbContext<ContactContext>();
+
             //Use DB in project directory.  If it does not exist, create it:
-            var connectionStringBuilder = new SqliteConnectionStringBuilder();
+            /*var connectionStringBuilder = new SqliteConnectionStringBuilder();
             connectionStringBuilder.DataSource = $"{_appEnv.ContentRootPath}/Contactdb.db";
             var connectionString = connectionStringBuilder.ToString();
             var connection = new SqliteConnection(connectionString);
             //var connection = new SqliteConnection("ContactsDB.db");
-            services.AddDbContext<ContactContext>(options => options.UseSqlite(connection));
+            services.AddDbContext<ContactContext>(options => options.UseSqlite(connection));*/
             //InitializeDb(connection);
             
             //services.AddDbContext<ContactContext>(options =>
@@ -84,25 +93,28 @@ namespace ContactManager
             });
 
         }
+        //NOT USED ANYMORE. NOW MAKING DB FULLY WITH ENTITY FRAMEWORK.
         public void InitializeDb(SqliteConnection connection)
         {
             using(connection)
             {
                 connection.Open();
                 //Create contacts table if it doesnt exist:
-                var delTableCmd = connection.CreateCommand();
-                string createTableQuery = @"CREATE TABLE IF NOT EXISTS Contacts (
+                var contactTableCmd = connection.CreateCommand();
+                string createContactsQuery = @"CREATE TABLE IF NOT EXISTS Contacts (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 Name TEXT NOT NULL,
                 Birthdate DATETIME,
+                ContactGroupId INTEGER,
                 ContactGroup TEXT,
                 Description TEXT,
                 Favorite INTEGER,
                 CreatedAt DATETIME,
                 UpdatedAt DATETIME
                 );";
-                delTableCmd.CommandText = createTableQuery;
-                delTableCmd.ExecuteNonQuery();   
+                contactTableCmd.CommandText = createContactsQuery;
+                contactTableCmd.ExecuteNonQuery();
+                connection.Close();
             }
 
         }
