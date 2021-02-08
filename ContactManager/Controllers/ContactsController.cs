@@ -105,4 +105,100 @@ namespace ContactManager.Controllers
             return _context.Contacts.Any(e => e.Id == id);
         }
     }
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class GroupsController : ControllerBase
+    {
+        private readonly ContactContext _context;
+
+        public GroupsController(ContactContext context)
+        {
+            _context = context;
+        }
+
+        // GET: api/Contacts
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ContactGroup>>> GetContactGroups()
+        {
+            return await _context.ContactGroups.ToListAsync();
+        }
+
+        // GET: api/Contacts/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ContactGroup>> GetContactGroup(int id)
+        {
+            var group = await _context.ContactGroups.FindAsync(id);
+
+            if (group == null)
+            {
+                return NotFound();
+            }
+
+            return group;
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutContactGroup(int id, ContactGroup group)
+        {
+            if (id != group.ContactGroupId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(group).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!GroupExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/Contacts
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<ContactGroup>> PostContactGroup(ContactGroup group)
+        {
+            _context.ContactGroups.Add(group);
+            await _context.SaveChangesAsync();
+
+            //return CreatedAtAction("GetContact", new { id = contact.Id }, contact);
+            return CreatedAtAction(nameof(GetContactGroup), new { id = group.ContactGroupId }, group);
+        }
+
+        // DELETE: api/Contacts/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteContactGroup(int id)
+        {
+            var group = await _context.ContactGroups.FindAsync(id);
+            if (group == null)
+            {
+                return NotFound();
+            }
+
+            _context.ContactGroups.Remove(group);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool GroupExists(int id)
+        {
+            return _context.ContactGroups.Any(e => e.ContactGroupId == id);
+        }
+    }
+
 }
