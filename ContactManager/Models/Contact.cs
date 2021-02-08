@@ -19,8 +19,7 @@ namespace ContactManager.Models
         [Required(ErrorMessage = "Name is required.")]
         public string Name {get; set; }
         public string Birthdate { get; set; }
-        public int ContactGroupId { get; set; }
-        public ContactGroup ContactGroup {get; set; }
+        public ICollection<ContactGroup> ContactGroups { get; set; }
         public string Description {get; set; }
         public bool Favorite {get; set; }
         public string CreatedAt { get; set; }
